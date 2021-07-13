@@ -1,7 +1,8 @@
 name: animated_appbar
-description: A new flutter plugin project.
-version: 0.0.1
-homepage:
+description: AppBar which can dynamically change height with page navigation.
+version: 1.0.0
+author: Namkyu Park
+homepage: https://flutterbased.studio
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -22,20 +23,6 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
-  # This section identifies this Flutter project as a plugin project.
-  # The 'pluginClass' and Android 'package' identifiers should not ordinarily
-  # be modified. They are used by the tooling to maintain consistency when
-  # adding or updating assets for this project.
-  # plugin:
-  #   platforms:
-  #     android:
-  #       package: in.wouldyou.animated_appbar
-  #       pluginClass: AnimatedAppbarPlugin
-  #     ios:
-  #       pluginClass: AnimatedAppbarPlugin
-  #     web:
-  #       pluginClass: AnimatedAppbarWeb
-  #       fileName: animated_appbar_web.dart
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:

@@ -19,9 +19,11 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin{
   PageNotifier pageNotifier = PageNotifier();
 
   void voidCallback(){
-    // You must change instance value for changing setstate
-    // 여기서 당장 실행되는게 아니라 다른 클래스로 넘어가기 때문에
-    // 값에 의한 복사가 아니라 참조에 의한 복사라 값자체로 넘기면 안바뀜
+    // If you wanna use setState function,
+    // You must use instance value, not primitive value.
+    // Because this function run in another area(function),
+    // primitive valus are call-by-value,
+    // instance values are call-by-reference
     setState(() => tappedNotifier.setSwitch());
   }
   
