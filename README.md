@@ -99,11 +99,11 @@ This package is expected to be used with `BaseLayout` and `AnimatedAppbar`
         @override
         Widget build(BuildContext context) {
             return Scaffold(
-            body: Center(
-                child:Container(
-                    color: Colors.pinkAccent,
-                    child: TextButton(onPressed: callback, child: Text("page 2 Click here!",style: TextStyle(fontSize: 20,color: Colors.black)))),
-            ),
+                body: Center(
+                    child:Container(
+                        color: Colors.pinkAccent,
+                        child: TextButton(onPressed: callback, child: Text("page 2 Click here!",style: TextStyle(fontSize: 20,color: Colors.black)))),
+                ),
             );
         }
     }
