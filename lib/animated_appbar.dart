@@ -59,10 +59,10 @@ class BaseLayout extends StatefulWidget {
   const BaseLayout({required this.scaffold,required this.appbar });
   
   @override
-  Base_LayoutState createState() => Base_LayoutState();
+  BaseLayoutState createState() => BaseLayoutState();
 }
 
-class Base_LayoutState extends State<BaseLayout> {
+class BaseLayoutState extends State<BaseLayout> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,11 +78,9 @@ class Base_LayoutState extends State<BaseLayout> {
 
 class TappedNotifier{
   
-  bool _isTapped = false ;
+  bool isTapped = false ;
   
-  bool get isTapped => _isTapped;
-  set isTapped(bool isTapped) => _isTapped=isTapped;
   void setSwitch(){
-    _isTapped = !_isTapped;
+    isTapped = !isTapped;
   }
 }
