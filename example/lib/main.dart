@@ -24,7 +24,6 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin{
       debugShowCheckedModeBanner: false,
       // BaseLayout is declared in this package
       home: BaseLayout(
-        test: Page2(),
         appbar: AnimatedAppBar(
           initHeight: 135.0,
           backgroundColor: Colors.pink,

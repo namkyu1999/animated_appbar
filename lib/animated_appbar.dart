@@ -54,10 +54,9 @@ class _AnimatedAppBarState extends State<AnimatedAppBar> {
 class BaseLayout extends StatefulWidget {
   
   final Widget scaffold;
-  final Widget test;
   final Widget appbar;
 
-  BaseLayout({required this.scaffold,required this.appbar,required this.test }){
+  BaseLayout({required this.scaffold,required this.appbar}){
     Get.put(PageChangedNotifier(scaffold));
   }
   
