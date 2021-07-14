@@ -1,5 +1,6 @@
 # animated_appbar
 
+[![pub package](https://img.shields.io/pub/v/animated_appbar.svg)](https://pub.dev/packages/animated_appbar)
 <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-purple.svg" alt="License: MIT"></a>
 
 AppBar which can dynamically change height with page navigation.
