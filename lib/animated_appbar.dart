@@ -1,50 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class AnimatedAppbar extends StatefulWidget{
+class AnimatedAppBar extends StatefulWidget{
   
   final Widget child;
   final Color? backgroundColor;
   final double initHeight;
-  final void Function() pageTransitionCallback;
-  final TappedNotifier tappedNotifier;
-  AnimatedAppbar({required this.child, this.backgroundColor, required this.initHeight,required this.tappedNotifier,required this.pageTransitionCallback});
+
+  AnimatedAppBar({required this.child, this.backgroundColor, required this.initHeight});
 
   @override
-  _AnimatedAppbarState createState() => _AnimatedAppbarState();
+  _AnimatedAppBarState createState() => _AnimatedAppBarState();
 
 }
 
-class _AnimatedAppbarState extends State<AnimatedAppbar> {
+class _AnimatedAppBarState extends State<AnimatedAppBar> {
 
   @override
   Widget build(BuildContext context) {
 
     var size = MediaQuery.of(context).size;
-    double tappedValue = widget.tappedNotifier.isTapped? 0 : size.height - widget.initHeight;
-
-    return AnimatedPadding(
-        onEnd: () {
-          if(widget.tappedNotifier.isTapped == true){
-            setState(() {
-                widget.tappedNotifier.isTapped = false;
-                widget.pageTransitionCallback();
-            });
-          }
-        },
-        padding: EdgeInsets.fromLTRB(0,0,0,tappedValue),
-        duration: const Duration(milliseconds: 600),
-        curve: Curves.easeOutCubic,
-        child: Container(
-          width: size.width,
-          height: size.height,
-          child: widget.child,
-          decoration: BoxDecoration(
-            color: widget.backgroundColor,
-            borderRadius: BorderRadius.only(
-              bottomRight: Radius.circular(50)
+  
+    return GetBuilder<PageChangedNotifier>(
+      builder:(controller){
+        var isTapped = controller.isTapped;
+        double tappedValue = isTapped? 0 : size.height - widget.initHeight;
+        return AnimatedPadding(
+            onEnd: () {
+              if(isTapped == true){
+                controller.tapped();
+              }
+            },
+            padding: EdgeInsets.fromLTRB(0,0,0,tappedValue),
+            duration: const Duration(milliseconds: 600),
+            curve: Curves.easeOutCubic,
+            child: Container(
+              width: size.width,
+              height: size.height,
+              child: widget.child,
+              decoration: BoxDecoration(
+                color: widget.backgroundColor,
+                borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(50)
+                ),
+              ),
             ),
-          ),
-        ),
+          );
+      } 
     );
   }
 }
@@ -52,33 +54,60 @@ class _AnimatedAppbarState extends State<AnimatedAppbar> {
 class BaseLayout extends StatefulWidget {
   
   final Widget scaffold;
+  final Widget test;
   final Widget appbar;
 
-  const BaseLayout({required this.scaffold,required this.appbar });
+  BaseLayout({required this.scaffold,required this.appbar,required this.test }){
+    Get.put(PageChangedNotifier(scaffold));
+  }
   
   @override
   BaseLayoutState createState() => BaseLayoutState();
 }
 
 class BaseLayoutState extends State<BaseLayout> {
+  
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          widget.scaffold,
-          widget.appbar,
-        ],
+
+    return GetBuilder<PageChangedNotifier>(
+        builder:(controller)=> Scaffold(
+        body: Stack(
+            children: [
+              controller.page,
+              widget.appbar,
+            ],
+          ),
       ),
     );
   }
 }
 
-class TappedNotifier{
+class PageChangedNotifier extends GetxController{
   
-  bool isTapped = false ;
-  
-  void setSwitch(){
+  Widget page;
+  bool isTapped = false;
+
+  PageChangedNotifier(Widget page):this.page=page;
+
+  void transition(Widget page){
+    tapped();
+    Future.delayed(Duration(milliseconds: 600),()=>setPage(page));
+  }
+
+  void setPage(Widget page){
+    this.page = page;
+    update();
+  }
+
+  void tapped(){
     isTapped = !isTapped;
+    update();
+  }
+}
+
+class RoutePage{
+  void routePage(Widget page){
+    Get.find<PageChangedNotifier>().transition(page);
   }
 }

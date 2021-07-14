@@ -8,102 +8,80 @@ AppBar which can dynamically change height with page navigation.
 
 ## Usage
 
-This package is expected to be used with `BaseLayout` and `AnimatedAppbar`
+This package is expected to be used with `BaseLayout` and `AnimatedAppBar`
 
 ```dart
+    import 'package:flutter/material.dart';
+    import 'package:animated_appbar/animated_appbar.dart';
+
     void main() {
         runApp(MyApp());
     }
 
     class MyApp extends StatefulWidget {
-        @override
-            _MyAppState createState() => _MyAppState();
-        }
+    @override
+        _MyAppState createState() => _MyAppState();
+    }
 
-        class _MyAppState extends State<MyApp> with TickerProviderStateMixin{
+    class _MyAppState extends State<MyApp> with TickerProviderStateMixin{
+    
+    @override
+    void initState() {
+        super.initState();
+    }
+    @override
+    Widget build(BuildContext context) {
         
-            
-            TappedNotifier tappedNotifier = TappedNotifier();
-            PageNotifier pageNotifier = PageNotifier();
-
-        void voidCallback(){
-            // If you wanna use setState function,
-            // You must use instance value, not primitive value.
-            // Because this function run in another area(function),
-            // primitive valus are call-by-value,
-            // instance values are call-by-reference
-            setState(() => tappedNotifier.setSwitch());
-        }
-        
-        @override
-        Widget build(BuildContext context) {
-            return MaterialApp(
+        return MaterialApp(
             debugShowCheckedModeBanner: false,
+            // BaseLayout is declared in this package
             home: BaseLayout(
-                appbar: AnimatedAppbar(
-                tappedNotifier: tappedNotifier,
-                initHeight: 135.0,
-                backgroundColor: Colors.pink,
-                pageTransitionCallback: () { 
-                    setState(() => pageNotifier.setSwitch());
-                },
-                child: Center(
-                    child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                        Text("App bar"),
-                        Text("you can customize here!"),
-                    ],
+                    test: Page2(),
+                    appbar: AnimatedAppBar(
+                        initHeight: 135.0,
+                        backgroundColor: Colors.pink,
+                        child: Center(
+                            child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                    Text("App bar"),
+                                    Text("you can customize here!"),
+                                ],
+                            ),
+                        ),
                     ),
+                    // Set init Page
+                    scaffold: Page1(),
                 ),
-                ),
-                scaffold: pageNotifier.changed? Page2(callback: voidCallback):Page1(callback: voidCallback),
-            ),
             );
         }
     }
 
-    class PageNotifier{
-        bool _changed = false;
-        bool get changed => _changed;
-        set changed(bool changed) => _changed=changed;
-        void setSwitch(){
-            _changed = !_changed;
-        }
-    }
-
-    typedef VoidCallback = void Function();
-
-    class Page1 extends StatelessWidget {
-
-        final VoidCallback callback;
-        
-        const Page1({ Key? key,required this.callback }) : super(key: key);
-
+    class Page1 extends StatelessWidget with RoutePage{
+    
         @override
         Widget build(BuildContext context) {
             return Scaffold(
-                    body: Center(
+                body: Center(
                     child:Container(
                         color: Colors.tealAccent,
-                        child: TextButton(onPressed: callback, child: Text("page 1 Click here!",style: TextStyle(fontSize: 20,color: Colors.black)))),
+                        // If you wanna route page, Using routePage(Widget)!
+                        // This method is specified in RoutePage. You just declare RoutePage class to mixin and using routePage(Widget) !
+                        child: TextButton(onPressed: ()=> routePage(Page2()), child: Text("page 1 Click here!",style: TextStyle(fontSize: 20,color: Colors.black)))),
                 ),
             );
         }
     }
-    class Page2 extends StatelessWidget {
 
-        final VoidCallback callback;
-        
-        const Page2({ Key? key,required this.callback }) : super(key: key);
-
+    class Page2 extends StatelessWidget with RoutePage{
+    
         @override
         Widget build(BuildContext context) {
             return Scaffold(
                 body: Center(
                     child:Container(
                         color: Colors.pinkAccent,
-                        child: TextButton(onPressed: callback, child: Text("page 2 Click here!",style: TextStyle(fontSize: 20,color: Colors.black)))),
+                        child: TextButton(onPressed: () => routePage(Page1()),child: Text("page 2 Click here!",style: TextStyle(fontSize: 20,color: Colors.black)))),
                 ),
             );
         }

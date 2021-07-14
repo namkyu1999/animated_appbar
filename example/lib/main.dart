@@ -12,31 +12,22 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> with TickerProviderStateMixin{
   
-    
-  TappedNotifier tappedNotifier = TappedNotifier();
-  PageNotifier pageNotifier = PageNotifier();
+  @override
+  void initState() {
+    super.initState();
 
-  void voidCallback(){
-    // If you wanna use setState function,
-    // You must use instance value, not primitive value.
-    // Because this function run in another area(function),
-    // primitive valus are call-by-value,
-    // instance values are call-by-reference
-    setState(() => tappedNotifier.setSwitch());
   }
-  
   @override
   Widget build(BuildContext context) {
+    
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      // BaseLayout is declared in this package
       home: BaseLayout(
-        appbar: AnimatedAppbar(
-          tappedNotifier: tappedNotifier,
+        test: Page2(),
+        appbar: AnimatedAppBar(
           initHeight: 135.0,
           backgroundColor: Colors.pink,
-          pageTransitionCallback: () { 
-            setState(() => pageNotifier.setSwitch());
-          },
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -47,52 +38,38 @@ class _MyAppState extends State<MyApp> with TickerProviderStateMixin{
             ),
           ),
         ),
-        scaffold: pageNotifier.changed? Page2(callback: voidCallback):Page1(callback: voidCallback),
+        // Set init Page
+        scaffold: Page1(),
       ),
     );
   }
 }
 
-class PageNotifier{
-  bool _changed = false;
-  bool get changed => _changed;
-  set changed(bool changed) => _changed=changed;
-  void setSwitch(){
-    _changed = !_changed;
-  }
-}
-
-class Page1 extends StatelessWidget {
-
-  final void Function() callback;
+class Page1 extends StatelessWidget with RoutePage{
   
-  const Page1({ Key? key,required this.callback }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child:Container(
               color: Colors.tealAccent,
-              child: TextButton(onPressed: callback, child: Text("page 1 Click here!",style: TextStyle(fontSize: 20,color: Colors.black)))),
+              // If you wanna route page, Using routePage(Widget)!
+              // This method is specified in RoutePage. You just declare RoutePage class to mixin and using routePage(Widget) !
+              child: TextButton(onPressed: ()=> routePage(Page2()), child: Text("page 1 Click here!",style: TextStyle(fontSize: 20,color: Colors.black)))),
       ),
     );
   }
 }
 
-class Page2 extends StatelessWidget {
+class Page2 extends StatelessWidget with RoutePage{
   
-  final void Function() callback;
-
-  const Page2({ Key? key,required this.callback }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child:Container(
               color: Colors.pinkAccent,
-              child: TextButton(onPressed: callback, child: Text("page 2 Click here!",style: TextStyle(fontSize: 20,color: Colors.black)))),
+              child: TextButton(onPressed: () => routePage(Page1()),child: Text("page 2 Click here!",style: TextStyle(fontSize: 20,color: Colors.black)))),
       ),
     );
   }

@@ -7,7 +7,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "1.0.2"
+    version: "2.0.0"
   async:
     dependency: transitive
     description:
@@ -74,18 +74,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_web_plugins:
-    dependency: transitive
-    description: flutter
-    source: sdk
-    version: "0.0.0"
-  js:
+  get:
     dependency: transitive
     description:
-      name: js
+      name: get
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.3"
+    version: "4.1.4"
   matcher:
     dependency: transitive
     description:
