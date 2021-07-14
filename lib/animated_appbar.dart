@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 
-typedef VoidCallback = void Function();
-
 class AnimatedAppbar extends StatefulWidget{
   
   final Widget child;
   final Color? backgroundColor;
   final double initHeight;
-  final VoidCallback pageTransitionCallback;
+  final void Function() pageTransitionCallback;
   final TappedNotifier tappedNotifier;
   AnimatedAppbar({required this.child, this.backgroundColor, required this.initHeight,required this.tappedNotifier,required this.pageTransitionCallback});
 

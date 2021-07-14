@@ -1,5 +1,3 @@
-import 'package:animated_appbar_example/page1.dart';
-import 'package:animated_appbar_example/page2.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_appbar/animated_appbar.dart';
 
@@ -61,5 +59,41 @@ class PageNotifier{
   set changed(bool changed) => _changed=changed;
   void setSwitch(){
     _changed = !_changed;
+  }
+}
+
+class Page1 extends StatelessWidget {
+
+  final void Function() callback;
+  
+  const Page1({ Key? key,required this.callback }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child:Container(
+              color: Colors.tealAccent,
+              child: TextButton(onPressed: callback, child: Text("page 1 Click here!",style: TextStyle(fontSize: 20,color: Colors.black)))),
+      ),
+    );
+  }
+}
+
+class Page2 extends StatelessWidget {
+  
+  final void Function() callback;
+
+  const Page2({ Key? key,required this.callback }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child:Container(
+              color: Colors.pinkAccent,
+              child: TextButton(onPressed: callback, child: Text("page 2 Click here!",style: TextStyle(fontSize: 20,color: Colors.black)))),
+      ),
+    );
   }
 }
