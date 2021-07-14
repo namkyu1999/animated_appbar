@@ -36,7 +36,6 @@ This package is expected to be used with `BaseLayout` and `AnimatedAppBar`
             debugShowCheckedModeBanner: false,
             // BaseLayout is declared in this package
             home: BaseLayout(
-                    test: Page2(),
                     appbar: AnimatedAppBar(
                         initHeight: 135.0,
                         backgroundColor: Colors.pink,
