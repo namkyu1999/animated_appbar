@@ -15,3 +15,8 @@ Fix minor bug
 
 ## 2.1.0
 Refactor code
+
+## 2.1.1
+Add routing back method.
+Fix animations.
+

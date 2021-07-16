@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:stack/stack.dart' as Collection;
 
 class AnimatedAppBar extends StatefulWidget{
   
@@ -7,6 +8,9 @@ class AnimatedAppBar extends StatefulWidget{
   final Color? backgroundColor;
   final double initHeight;
 
+  Widget getChild(){
+    return child;
+  }
   AnimatedAppBar({required this.child, this.backgroundColor, required this.initHeight});
 
   @override
@@ -37,7 +41,10 @@ class _AnimatedAppBarState extends State<AnimatedAppBar> {
             child: Container(
               width: size.width,
               height: size.height,
-              child: widget.child,
+              child: AnimatedSwitcher(
+                duration:Duration(milliseconds : 600),
+                child:controller.appBar,
+              ),
               decoration: BoxDecoration(
                 color: widget.backgroundColor,
                 borderRadius: BorderRadius.only(
@@ -54,17 +61,21 @@ class _AnimatedAppBarState extends State<AnimatedAppBar> {
 class BaseLayout extends StatefulWidget {
   
   final Widget scaffold;
-  final Widget appbar;
+  final AnimatedAppBar appBar;
 
-  BaseLayout({required this.scaffold,required this.appbar}){
-    Get.put(PageChangedNotifier(scaffold));
-  }
+  BaseLayout({required this.scaffold,required this.appBar});
   
   @override
   BaseLayoutState createState() => BaseLayoutState();
 }
 
 class BaseLayoutState extends State<BaseLayout> {
+
+  @override
+  void initState() {
+    Get.put(PageChangedNotifier(page: widget.scaffold,appBar: widget.appBar.getChild()));
+    super.initState();
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -74,7 +85,7 @@ class BaseLayoutState extends State<BaseLayout> {
         body: Stack(
             children: [
               controller.page,
-              widget.appbar,
+              widget.appBar,
             ],
           ),
       ),
@@ -84,21 +95,45 @@ class BaseLayoutState extends State<BaseLayout> {
 
 class PageChangedNotifier extends GetxController{
   
-  Widget page;
+  late Collection.Stack<Widget> _page = Collection.Stack<Widget>();
+  late Collection.Stack<Widget> _appBar = Collection.Stack<Widget>();
   bool isTapped = false;
 
-  PageChangedNotifier(Widget page):this.page=page;
+  Widget get page => _page.top();
+  Widget get appBar => _appBar.top(); 
 
-  void transition(Widget page){
+  PageChangedNotifier({required Widget page,required Widget appBar}){
+    this._page.push(page);
+    this._appBar.push(appBar);
+  }
+
+  void transition(Widget page, [Widget? appBar]){
     tapped();
     Future.delayed(Duration(milliseconds: 600),()=>setPage(page));
+    if (appBar != null) Future.delayed(Duration(milliseconds: 300),()=>setAppBar(appBar));
   }
-
-  void setPage(Widget page){
-    this.page = page;
+  
+  void popTransition(){
+    tapped();
+    Future.delayed(Duration(milliseconds: 600),()=>popPage());
+    Future.delayed(Duration(milliseconds: 300),()=>popAppBar());
+  }
+  void setAppBar(Widget appBar){
+    this._appBar.push(appBar);
     update();
   }
-
+  void popAppBar(){
+    if(this._appBar.size()>1)this._appBar.pop();
+    update();
+  }
+  void setPage(Widget page){
+    this._page.push(page);
+    update();
+  }
+  void popPage(){
+    if(this._page.size()>1)this._page.pop();
+    update();
+  }
   void tapped(){
     isTapped = !isTapped;
     update();
@@ -108,5 +143,11 @@ class PageChangedNotifier extends GetxController{
 class RoutePage{
   void routePage(Widget page){
     Get.find<PageChangedNotifier>().transition(page);
+  }
+  void routePageWithNewAppBar(Widget page,Widget appBar){
+    Get.find<PageChangedNotifier>().transition(page,appBar);
+  }
+  void previousPage(){
+    Get.find<PageChangedNotifier>().popTransition();
   }
 }

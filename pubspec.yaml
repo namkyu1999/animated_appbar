@@ -1,6 +1,6 @@
 name: animated_appbar
 description: AppBar which can dynamically change height with page navigation.
-version: 2.1.0
+version: 2.1.1
 homepage: https://flutterbased.studio
 repository: https://github.com/namkyu1999/animated_appbar
 issue_tracker: https://github.com/namkyu1999/animated_appbar/issues
@@ -12,6 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   get: ^4.1.4
+  stack: ^0.2.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
