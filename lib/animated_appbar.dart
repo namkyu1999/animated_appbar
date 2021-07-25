@@ -15,7 +15,6 @@ class AnimatedAppBar extends StatefulWidget{
 
   @override
   _AnimatedAppBarState createState() => _AnimatedAppBarState();
-
 }
 
 class _AnimatedAppBarState extends State<AnimatedAppBar> {
@@ -62,8 +61,9 @@ class BaseLayout extends StatefulWidget {
   
   final Widget scaffold;
   final AnimatedAppBar appBar;
+  final Widget? fab;
 
-  BaseLayout({required this.scaffold,required this.appBar});
+  BaseLayout({required this.scaffold,required this.appBar, this.fab});
   
   @override
   BaseLayoutState createState() => BaseLayoutState();
@@ -82,12 +82,14 @@ class BaseLayoutState extends State<BaseLayout> {
 
     return GetBuilder<PageChangedNotifier>(
         builder:(controller)=> Scaffold(
+        resizeToAvoidBottomInset : false,
         body: Stack(
             children: [
               controller.page,
               widget.appBar,
             ],
           ),
+        floatingActionButton: widget.fab,
       ),
     );
   }
@@ -149,5 +151,9 @@ class RoutePage{
   }
   void previousPage(){
     Get.find<PageChangedNotifier>().popTransition();
+  }
+  void reset(){
+    Get.delete<PageChangedNotifier>();
+    Get.reset();
   }
 }

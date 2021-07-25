@@ -20,3 +20,10 @@ Refactor code
 Add routing back method.
 Fix animations.
 
+## 2.1.2
+Add reset function.
+
+## 2.1.3
+Fix minor bug
+
+
