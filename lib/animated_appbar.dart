@@ -63,7 +63,7 @@ class BaseLayout extends StatefulWidget {
   final AnimatedAppBar appBar;
   final Widget? fab;
 
-  BaseLayout({required this.scaffold,required this.appBar, this.fab});
+  BaseLayout({required this.scaffold,required this.appBar,this.fab});
   
   @override
   BaseLayoutState createState() => BaseLayoutState();
@@ -89,7 +89,10 @@ class BaseLayoutState extends State<BaseLayout> {
               widget.appBar,
             ],
           ),
-        floatingActionButton: controller.isTapped?null:widget.fab,
+        floatingActionButton: Visibility(
+          visible: !controller.isTapped,
+          child: widget.fab == null? Container():widget.fab!,
+        ),
       ),
     );
   }
