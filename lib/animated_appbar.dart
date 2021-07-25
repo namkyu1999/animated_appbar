@@ -89,7 +89,7 @@ class BaseLayoutState extends State<BaseLayout> {
               widget.appBar,
             ],
           ),
-        floatingActionButton: widget.fab,
+        floatingActionButton: controller.isTapped?null:widget.fab,
       ),
     );
   }

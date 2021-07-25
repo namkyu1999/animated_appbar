@@ -26,4 +26,7 @@ Add reset function.
 ## 2.1.3
 Fix minor bug
 
+## 2.1.4
+Fix minor bug
+
 
